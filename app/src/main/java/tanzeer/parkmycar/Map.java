@@ -121,7 +121,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
                     LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
                     double distance = CalculationByDistance(latLng,latLng1);
-                    if (distance<=4.0) {
+                    if (distance<=4.0 && Integer.parseInt(parking.getFree())>0) {
                         final MarkerOptions markerOptions1 = new MarkerOptions();
                         markerOptions1.position(latLng1);
                         markerOptions1.title(parking.getName());
@@ -141,7 +141,24 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                                                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                                                 Log.d(TAG, "customer name: " + id);
                                                 db.child("bookings").child(id).child("parking").setValue(marker.getTitle());
-                                                DatabaseReference d = FirebaseDatabase.getInstance().getReference("parkings");
+                                                db.child("parkings").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                                                            AddParking parkingSelected = postSnapshot.getValue(AddParking.class);
+                                                            if (parkingSelected.getName().equals(marker.getTitle())){
+                                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("parkings");
+                                                                ref.child(parkingSelected.getSerial()).child("free").setValue(String.valueOf(Integer.parseInt(parkingSelected.getFree())-1));
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
                                                 finish();
                                             }
                                         })

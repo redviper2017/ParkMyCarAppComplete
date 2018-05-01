@@ -60,7 +60,7 @@ public class AdminPanel extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int serialCurrent = Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))+1;
-                        AddParking addParking = new AddParking(n,ca,la,lo,free);
+                        AddParking addParking = new AddParking(n,ca,la,lo,free,String.valueOf(serialCurrent));
                         databaseReference.child(String.valueOf(serialCurrent)).setValue(addParking);
                     }
 

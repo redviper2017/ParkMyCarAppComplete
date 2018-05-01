@@ -5,17 +5,18 @@ package tanzeer.parkmycar;
  */
 
 public class AddParking {
-   private String name,capacity,lat,lon,free;
+   private String name,capacity,lat,lon,free, serial;
 
     public AddParking() {
     }
 
-    public AddParking(String name, String capacity, String lat, String lon, String free) {
+    public AddParking(String name, String capacity, String lat, String lon, String free, String serial) {
         this.name = name;
         this.capacity = capacity;
         this.lat = lat;
         this.lon = lon;
         this.free = free;
+        this.serial = serial;
     }
 
     public String getName() {
@@ -56,5 +57,13 @@ public class AddParking {
 
     public void setFree(String free) {
         this.free = free;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 }
