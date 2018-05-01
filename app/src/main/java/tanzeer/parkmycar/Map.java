@@ -17,6 +17,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.directions.route.AbstractRouting;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -30,6 +35,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,11 +45,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        RoutingListener{
 
     private Location lastLocation;
     private GoogleMap mMap;
@@ -50,9 +59,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
     private LocationRequest locationRequest;
     private Marker currentLocationMarker;
     private Marker parking1Marker;
+
+    LatLng latLng;
     public static final int REQUEST_LOCATION_CODE = 99;
     String TAG = "Map";
     String id;
+
+    private List<Polyline> polylines;
+    private static final int[] COLORS = new int[]{R.color.primary_dark,R.color.primary,R.color.primary_light,R.color.accent,R.color.brown};
 
 
 
@@ -100,11 +114,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
-        final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("My Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         currentLocationMarker = mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
@@ -119,13 +133,13 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                 for (DataSnapshot post : dataSnapshot.getChildren()){
                     AddParking parking = post.getValue(AddParking.class);
 
-                    LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
+                    final LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
                     double distance = CalculationByDistance(latLng,latLng1);
                     if (distance<=4.0 && Integer.parseInt(parking.getFree())>0) {
                         final MarkerOptions markerOptions1 = new MarkerOptions();
                         markerOptions1.position(latLng1);
                         markerOptions1.title(parking.getName());
-                        markerOptions1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        markerOptions1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         markerOptions1.snippet("Free Spots = " + parking.getFree());
                         parking1Marker = mMap.addMarker(markerOptions1);
 
@@ -149,6 +163,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                                                             if (parkingSelected.getName().equals(marker.getTitle())){
                                                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("parkings");
                                                                 ref.child(parkingSelected.getSerial()).child("free").setValue(String.valueOf(Integer.parseInt(parkingSelected.getFree())-1));
+                                                                getRouteToMarker(marker.getPosition());
                                                             }
 
                                                         }
@@ -159,7 +174,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
                                                     }
                                                 });
-                                                finish();
+
                                             }
                                         })
                                         .setNegativeButton("Not this", new DialogInterface.OnClickListener() {
@@ -283,4 +298,66 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         super.onBackPressed();
         startActivity(new Intent(Map.this,Main.class));
     }
+
+    private void getRouteToMarker(LatLng pickupLatLng){
+        Routing routing = new Routing.Builder()
+                .travelMode(AbstractRouting.TravelMode.DRIVING)
+                .withListener(this)
+                .alternativeRoutes(false)
+                .waypoints(latLng,pickupLatLng)
+                .build();
+        routing.execute();
+    }
+
+    @Override
+    public void onRoutingFailure(RouteException e) {
+        if(e != null) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRoutingStart() {
+    }
+
+    @Override
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+//        if(polylines.size()>0) {
+//            for (Polyline poly : polylines) {
+//                poly.remove();
+//            }
+//        }
+
+        polylines = new ArrayList<>();
+        //add route(s) to the map.
+        for (int i = 0; i <route.size(); i++) {
+
+            //In case of more than 5 alternative routes
+            int colorIndex = i % COLORS.length;
+
+            PolylineOptions polyOptions = new PolylineOptions();
+            polyOptions.color(getResources().getColor(COLORS[4]));
+            polyOptions.width(10 + i * 5);
+            polyOptions.addAll(route.get(i).getPoints());
+            Polyline polyline = mMap.addPolyline(polyOptions);
+            polylines.add(polyline);
+
+            Toast.makeText(getApplicationContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onRoutingCancelled() {
+    }
+
+    private void erasePolylines(){
+        for (Polyline line : polylines){
+            line.remove();
+        }
+        polylines.clear();
+    }
+
 }
