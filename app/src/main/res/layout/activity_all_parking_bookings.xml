@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tanzeer.parkmycar.AllParkingBookings"
+    android:background="@color/pink">
+    <TextView
+        android:id="@+id/title_booking"
+        android:text="Status of Bookings"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_25ssp"
+        android:paddingTop="@dimen/_10sdp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pink"/>
+    <ListView
+        android:id="@+id/list_booking"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_430sdp"
+        android:layout_below="@+id/title_booking"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/primary_light"
+        android:divider="@color/white"
+        android:dividerHeight="@dimen/_1sdp"
+        tools:layout_editor_absoluteX="8sdp"
+        tools:layout_editor_absoluteY="8dp" />
+</RelativeLayout>

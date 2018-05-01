@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tanzeer.parkmycar.Main"
+    android:gravity="center"
+    android:paddingLeft="@dimen/_20sdp"
+    android:paddingRight="@dimen/_20sdp"
+    android:background="@color/primary_light"
+    >
+
+
+    <EditText
+        android:id="@+id/editText_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_71sdp"
+        android:ems="10"
+        android:hint="Name"
+        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+        android:drawableStart="@drawable/ic_person_outline_black_24dp"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/primary_dark"
+        android:drawablePadding="@dimen/_5sdp"/>
+
+    <EditText
+        android:id="@+id/editText_mobile"
+        android:layout_below="@+id/editText_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Mobile Number"
+        android:textColorHint="@color/primary_dark"
+        android:inputType="phone"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:drawableLeft="@drawable/ic_phone_black_24dp"
+        android:drawableStart="@drawable/ic_phone_black_24dp"
+        android:drawablePadding="@dimen/_5sdp"/>
+
+    <EditText
+        android:id="@+id/editText_vin"
+        android:layout_below="@+id/editText_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Vehicle number"
+        android:textColorHint="@color/primary_dark"
+        android:inputType="number"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:drawableLeft="@drawable/ic_directions_car_black_24dp"
+        android:drawableStart="@drawable/ic_directions_car_black_24dp"
+        android:drawablePadding="@dimen/_5sdp"/>
+
+    <RelativeLayout
+        android:id="@+id/txt_time"
+        android:layout_below="@id/editText_vin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rel"
+        android:layout_below="@id/txt_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_73sdp"
+        android:background="@drawable/buttondarkblue"
+        android:text="@string/book_my_parking"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15ssp" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="@dimen/_123sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txt_startTime"
+        android:layout_marginTop="@dimen/_26sdp"
+        android:background="@drawable/buttonstylepink"
+        android:text="From"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15ssp" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="@dimen/_123sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnStart"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/buttonstylepink"
+        android:text="To"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15ssp" />
+
+    <TextView
+        android:id="@+id/txt_startTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txt_time"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="@color/primary_dark"
+        android:textColorHint="@color/primary_dark"
+        android:paddingRight="@dimen/_10sdp"
+        android:hint="start time"
+        android:drawableLeft="@drawable/ic_timer_black_24dp"
+        android:drawableStart="@drawable/ic_timer_black_24dp"
+        android:drawablePadding="@dimen/_5sdp"/>
+
+    <TextView
+        android:id="@+id/txt_endTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editText_vin"
+        android:drawableLeft="@drawable/ic_timer_black_24dp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_timer_black_24dp"
+        android:hint="end time"
+        android:paddingLeft="@dimen/_40sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:textColor="@color/primary_dark"
+        android:textColorHint="@color/primary_dark"
+        android:textSize="@dimen/_15ssp" />
+
+</RelativeLayout>

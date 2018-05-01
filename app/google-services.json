@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "861131949126",
+    "firebase_url": "https://parkmycar-1523b.firebaseio.com",
+    "project_id": "parkmycar-1523b",
+    "storage_bucket": "parkmycar-1523b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861131949126:android:1bcef8798c852829",
+        "android_client_info": {
+          "package_name": "tanzeer.parkmycar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861131949126-28up2juu52m2mn2r8tiq7og0nsbvin9r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tanzeer.parkmycar",
+            "certificate_hash": "1cb760f9d222f10067b9d5b99d98d17bcde16f51"
+          }
+        },
+        {
+          "client_id": "861131949126-v75eo1p0e28vgfv0dvsd6a4pqjds56ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyMFCT2NdCJw_4oh3oiKUpNs2ghy4yFI0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861131949126-v75eo1p0e28vgfv0dvsd6a4pqjds56ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
