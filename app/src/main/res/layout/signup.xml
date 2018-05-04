@@ -70,8 +70,8 @@
             android:layout_width="@dimen/_300sdp"
             android:layout_height="wrap_content"
             android:hint="@string/txt_vehicle_registration_number"
-            android:drawableLeft="@drawable/ic_directions_car_black_24dp"
-            android:drawableStart="@drawable/ic_directions_car_black_24dp"
+            android:drawableLeft="@drawable/ic_directions_car_pink_24dp"
+            android:drawableStart="@drawable/ic_directions_car_pink_24dp"
             android:drawablePadding="@dimen/_10sdp"/>
 
         <Spinner

@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_add"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/buttonstylegreen"
+        android:background="@drawable/buttonstylepurple"
         android:text="@string/see_all_bookings"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/_15sdp"/>

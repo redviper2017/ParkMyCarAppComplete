@@ -2,9 +2,13 @@ package tanzeer.parkmycar;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import android.os.Build;
@@ -31,8 +35,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -64,9 +70,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
     public static final int REQUEST_LOCATION_CODE = 99;
     String TAG = "Map";
     String id;
+    double fees;
 
     private List<Polyline> polylines;
-    private static final int[] COLORS = new int[]{R.color.primary_dark,R.color.primary,R.color.primary_light,R.color.accent,R.color.brown};
+    private static final int[] COLORS = new int[]{R.color.primary_dark,R.color.primary,R.color.primary_light,R.color.accent,R.color.deepgreen};
 
 
 
@@ -77,6 +84,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         Intent intent = getIntent();
 
         id = intent.getStringExtra("id");
+        fees = intent.getDoubleExtra("fees",0.0);
+        Log.d(TAG,"fees: "+fees);
 
 
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
@@ -93,7 +102,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED)
         {
             buildGoogleApiClient();
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.mapstyle));
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setRotateGesturesEnabled(true);
         }
     }
 
@@ -118,7 +130,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("My Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerOptions.icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_directions_car_big_pink_24dp));
         currentLocationMarker = mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
@@ -133,14 +145,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                 for (DataSnapshot post : dataSnapshot.getChildren()){
                     AddParking parking = post.getValue(AddParking.class);
 
-                    final LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
+                    LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
                     double distance = CalculationByDistance(latLng,latLng1);
                     if (distance<=4.0 && Integer.parseInt(parking.getFree())>0) {
                         final MarkerOptions markerOptions1 = new MarkerOptions();
                         markerOptions1.position(latLng1);
                         markerOptions1.title(parking.getName());
-                        markerOptions1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        markerOptions1.snippet("Free Spots = " + parking.getFree());
+                        markerOptions1.icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_local_parking_big_yellow_24dp));
+                        markerOptions1.snippet("Free Spots = " + parking.getFree()+'\n'+"Charges: "+fees+" "+"(INR)");
                         parking1Marker = mMap.addMarker(markerOptions1);
 
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -155,6 +167,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                                                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                                                 Log.d(TAG, "customer name: " + id);
                                                 db.child("bookings").child(id).child("parking").setValue(marker.getTitle());
+                                                db.child("bookings").child(id).child("charges").setValue(fees);
                                                 db.child("parkings").addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -358,6 +371,15 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
             line.remove();
         }
         polylines.clear();
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }

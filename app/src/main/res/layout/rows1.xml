@@ -42,8 +42,8 @@
         android:paddingLeft="@dimen/_15sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"
-        android:drawableLeft="@drawable/ic_directions_car_black_24dp"
-        android:drawableStart="@drawable/ic_directions_car_black_24dp"
+        android:drawableLeft="@drawable/ic_directions_car_pink_24dp"
+        android:drawableStart="@drawable/ic_directions_car_pink_24dp"
         android:drawablePadding="@dimen/_10sdp"/>
     <TextView
         android:id="@+id/txt_parkingBooked"
