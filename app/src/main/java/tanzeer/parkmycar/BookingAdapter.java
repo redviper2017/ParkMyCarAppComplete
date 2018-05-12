@@ -38,6 +38,7 @@ public class BookingAdapter extends ArrayAdapter {
         TextView start = convertView.findViewById(R.id.txt_startT);
         TextView end = convertView.findViewById(R.id.txt_endT);
         TextView parkingBooked = convertView.findViewById(R.id.txt_parkingBooked);
+        TextView charges = convertView.findViewById(R.id.txt_charges);
 
         Bookings bookings = bookingList.get(position);
         name.setText(bookings.getName());
@@ -46,6 +47,7 @@ public class BookingAdapter extends ArrayAdapter {
         start.setText(bookings.getFrom());
         end.setText(bookings.getTo());
         parkingBooked.setText(bookings.getParking());
+        charges.setText(bookings.getCharges());
         return convertView;
     }
 }

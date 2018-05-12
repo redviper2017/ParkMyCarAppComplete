@@ -5,8 +5,7 @@ package tanzeer.parkmycar;
  */
 
 public class Bookings {
-    String name, mobileNumber, vehicleNumber, from, to, parking;
-
+    String name, mobileNumber, vehicleNumber, from, to, parking,charges;
     public Bookings() {
     }
 
@@ -17,6 +16,16 @@ public class Bookings {
         this.from = from;
         this.to = to;
         this.parking=parking;
+    }
+
+    public Bookings(String name, String mobileNumber, String vehicleNumber, String from, String to, String parking, String charges) {
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.vehicleNumber = vehicleNumber;
+        this.from = from;
+        this.to = to;
+        this.parking = parking;
+        this.charges = charges;
     }
 
     public String getName() {
@@ -65,5 +74,13 @@ public class Bookings {
 
     public void setParking(String parking) {
         this.parking = parking;
+    }
+
+    public String getCharges() {
+        return charges;
+    }
+
+    public void setCharges(String charges) {
+        this.charges = charges;
     }
 }

@@ -16,13 +16,13 @@
         android:gravity="center"
         android:text="@string/txt_steps_of_booking"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/_22ssp"
+        android:textSize="@dimen/_21ssp"
         android:textStyle="bold"
         android:paddingTop="@dimen/_30sdp"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:gravity="center"

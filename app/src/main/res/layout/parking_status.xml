@@ -12,14 +12,15 @@
         android:text="Status of Parkings"
         android:textColor="@color/white"
         android:textSize="@dimen/_25ssp"
-        android:paddingTop="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/pink"/>
     <ListView
         android:id="@+id/list_parking"
-        android:layout_width="@dimen/_300sdp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_430sdp"
         android:layout_below="@+id/title_parking"
         android:layout_alignParentBottom="true"

@@ -144,7 +144,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot post : dataSnapshot.getChildren()){
                     AddParking parking = post.getValue(AddParking.class);
-
                     LatLng latLng1 = new LatLng(Double.parseDouble(parking.getLat()),Double.parseDouble(parking.getLon()));
                     double distance = CalculationByDistance(latLng,latLng1);
                     if (distance<=4.0 && Integer.parseInt(parking.getFree())>0) {
@@ -167,7 +166,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                                                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                                                 Log.d(TAG, "customer name: " + id);
                                                 db.child("bookings").child(id).child("parking").setValue(marker.getTitle());
-                                                db.child("bookings").child(id).child("charges").setValue(fees);
+                                                db.child("bookings").child(id).child("charges").setValue(String.valueOf(fees));
                                                 db.child("parkings").addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {

@@ -1,11 +1,18 @@
 package tanzeer.parkmycar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +30,8 @@ public class AdminPanel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_panel);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         viewParkingStatusButton = findViewById(R.id.btn_currentParkingStatus);
         viewParkingStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +63,19 @@ public class AdminPanel extends AppCompatActivity {
                 final String la = lat.getText().toString().trim();
                 final String lo = lon.getText().toString().trim();
                 final String free = ca;
+
+                if (TextUtils.isEmpty(n)){
+                    Toast.makeText(getApplicationContext(),"Must enter parking name!!",Toast.LENGTH_SHORT).show();
+                }
+                if (TextUtils.isEmpty(ca)){
+                    Toast.makeText(getApplicationContext(),"Must enter parking capacity!!",Toast.LENGTH_SHORT).show();
+                }
+                if (TextUtils.isEmpty(la)){
+                    Toast.makeText(getApplicationContext(),"Must enter parking coordinates!!",Toast.LENGTH_SHORT).show();
+                }
+                if (TextUtils.isEmpty(lo)){
+                    Toast.makeText(getApplicationContext(),"Must enter parking coordinates!!",Toast.LENGTH_SHORT).show();
+                }
 
                 databaseReference= FirebaseDatabase.getInstance().getReference("parkings");
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,4 +115,36 @@ public class AdminPanel extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(AdminPanel.this,AdminPanel.class));
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_exit) {
+            new AlertDialog.Builder(AdminPanel.this)
+                    .setTitle("Exit App Dialog")
+                    .setMessage("Do you really want to exit the app?")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    
 }

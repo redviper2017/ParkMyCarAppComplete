@@ -16,8 +16,11 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +50,7 @@ public class Main extends AppCompatActivity  {
     int bookingHours;
     int bookingMinutes;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,8 @@ public class Main extends AppCompatActivity  {
         end=findViewById(R.id.txt_endTime);
         bookingCharges=findViewById(R.id.txt_bookingCharges);
         fareCalcButton=findViewById(R.id.btn_calculateBookingCharge);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +180,37 @@ public class Main extends AppCompatActivity  {
         Log.i("log_tag","Hours: "+hours+", Mins: "+min);
         bookingHours = hours;
         bookingMinutes = min;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_exit) {
+            new AlertDialog.Builder(Main.this)
+                    .setTitle("Exit App Dialog")
+                    .setMessage("Do you really want to exit the app?")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 
